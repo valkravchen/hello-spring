@@ -2,6 +2,8 @@ package com.dobrynya.hellospring.controller;
 
 import com.dobrynya.hellospring.model.Book;
 import com.dobrynya.hellospring.service.BookService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,22 +18,25 @@ public class BookController {
     }
 
     @GetMapping
-    public List<Book> getAllBooks() {
-        return bookService.findAll();
+    public ResponseEntity<List<Book>> getAllBooks() {
+        return ResponseEntity.ok(bookService.findAll());
     }
 
     @GetMapping("/{id}")
-    public Book getBook(@PathVariable Long id) {
-        return bookService.findById(id);
+    public ResponseEntity<Book> getBook(@PathVariable Long id) {
+        Book book = bookService.findById(id);
+        return ResponseEntity.ok(book);
     }
 
     @PostMapping
-    public Book createBook(@RequestBody Book book) {
-        return bookService.save(book);
+    public ResponseEntity<Book> createBook(@RequestBody Book book) {
+        Book savedBook = bookService.save(book);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedBook);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBook(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         bookService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

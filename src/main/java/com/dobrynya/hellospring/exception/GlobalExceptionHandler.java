@@ -15,8 +15,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BookNotFoundException.class)
     /**
-     * @ExceptionHandler(SomeException.class) - метод вызывапется,
-     * когда выбрасывется указанное исключение.
+     * @ExceptionHandler(SomeException.class) - метод вызывается,
+     * когда выбрасывается указанное исключение.
      */
     public ResponseEntity<String> handlerBookNotFound(BookNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
