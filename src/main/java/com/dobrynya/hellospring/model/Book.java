@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @JsonPropertyOrder({"id", "title", "author"})
 @Entity
 @Table(name = "books")
@@ -22,6 +25,14 @@ public class Book {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private Author author;
+
+    @ManyToMany
+    @JoinTable( // описывает промежуточную таблицу
+            name = "book_tags", // name - имя таблицы
+            joinColumns = @JoinColumn(name = "book_id"), // колонка для текущей сущности (Book → book_id)
+            inverseJoinColumns = @JoinColumn(name = "tag_id") // колонка для связанной сущности (Tag → tag_id)
+    )
+    private Set<Tag> tags = new HashSet<>();
 
     public Book() {
     }
@@ -53,5 +64,13 @@ public class Book {
 
     public void setAuthor(Author author) {
         this.author = author;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 }
