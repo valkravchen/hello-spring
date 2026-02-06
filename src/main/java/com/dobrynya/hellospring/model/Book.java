@@ -1,9 +1,12 @@
 package com.dobrynya.hellospring.model;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+@JsonPropertyOrder({"id", "title", "author"})
 @Entity
 @Table(name = "books")
 public class Book {
@@ -15,8 +18,7 @@ public class Book {
     @Size(min = 2, max = 200, message = "Название: от 2 до 200 символов")
     private String title;
 
-    @NotBlank(message = "Автор обязателен")
-    @Size(min = 2, max = 100, message = "Автор: от 2 до 100 символов")
+    @NotNull(message = "Автор обязателен")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private Author author;
