@@ -42,10 +42,6 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    public List<Book> findByTitle(String title) {
-        return bookRepository.findByTitle(title);
-    }
-
     public List<Book> searchByTitle(String keyword) {
         return bookRepository.findByTitleContainingIgnoreCase(keyword);
     }

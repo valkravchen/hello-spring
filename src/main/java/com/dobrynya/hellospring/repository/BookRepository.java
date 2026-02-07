@@ -6,9 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
-    // Поиск по точному названию
-    List<Book> findByTitle(String title);
-
     // Поиск по части названия (содержит)
     List<Book> findByTitleContainingIgnoreCase(String keyword);
 
@@ -17,4 +14,10 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     // Поиск по имени автора
     List<Book> findByAuthorNameContainingIgnoreCase(String authorName);
+
+//    // Найти книги, у которых есть тег с указанным id
+//    List<Book> findByTags_Id(Long tagId);
+//
+//    // Найти книги, у которых есть тег с указанным именем
+//    List<Book> findByTags_NameContainingIgnoreCase(String tagName);
 }
