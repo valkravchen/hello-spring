@@ -53,4 +53,12 @@ public class BookService {
     public List<Book> findByAuthorName(String authorName) {
         return bookRepository.findByAuthorNameContainingIgnoreCase(authorName);
     }
+
+    public List<Book> findByTagId(Long tagId) {
+        return bookRepository.findByTags_Id(tagId);
+    }
+
+    public List<Book> findTagName(String tagName) {
+        return bookRepository.findByTags_NameContainingIgnoreCase(tagName);
+    }
 }
