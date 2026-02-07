@@ -74,7 +74,7 @@ public class BookController {
         }
 
         if (tagName != null) {
-            return ResponseEntity.ok(bookService.findTagName(tagName));
+            return ResponseEntity.ok(bookService.findByTagName(tagName));
         }
         // - Если ничего не передано → вернуть все книги
         return ResponseEntity.ok(bookService.findAll());

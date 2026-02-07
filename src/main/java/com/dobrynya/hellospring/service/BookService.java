@@ -58,7 +58,7 @@ public class BookService {
         return bookRepository.findByTags_Id(tagId);
     }
 
-    public List<Book> findTagName(String tagName) {
+    public List<Book> findByTagName(String tagName) {
         return bookRepository.findByTags_NameContainingIgnoreCase(tagName);
     }
 }
