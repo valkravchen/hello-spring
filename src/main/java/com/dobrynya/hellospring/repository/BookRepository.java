@@ -10,10 +10,10 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findByTitleContainingIgnoreCase(String keyword);
 
     // Поиск по автору (id)
-    List<Book> findByAuthorId(Long authorId);
+    List<Book> findByAuthors_Id(Long authorId);
 
     // Поиск по имени автора
-    List<Book> findByAuthorNameContainingIgnoreCase(String authorName);
+    List<Book> findByAuthors_NameContainingIgnoreCase(String authorName);
 
     // Найти книги, у которых есть тег с указанным id
     List<Book> findByTags_Id(Long tagId);

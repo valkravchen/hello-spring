@@ -3,6 +3,7 @@ package com.dobrynya.hellospring.model;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -21,10 +22,14 @@ public class Book {
     @Size(min = 2, max = 200, message = "Название: от 2 до 200 символов")
     private String title;
 
-    @NotNull(message = "Автор обязателен")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
-    private Author author;
+    @NotEmpty(message = "Укажите хотя бы одного автора")
+    @ManyToMany
+    @JoinTable(
+            name = "book_authors",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+    private Set<Author> authors = new HashSet<>();
 
     @ManyToMany
     @JoinTable( // описывает промежуточную таблицу
@@ -37,9 +42,9 @@ public class Book {
     public Book() {
     }
 
-    public Book(String title, Author author) {
+    public Book(String title, Set<Author> authors) {
         this.title = title;
-        this.author = author;
+        this.authors = authors;
     }
 
     public Long getId() {
@@ -58,12 +63,12 @@ public class Book {
         this.title = title;
     }
 
-    public Author getAuthor() {
-        return author;
+    public Set<Author> getAuthors() {
+        return authors;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
     }
 
     public Set<Tag> getTags() {

@@ -7,7 +7,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
@@ -22,11 +24,11 @@ public class Author {
     @Size(min = 2, max = 100, message = "Имя автора: от 2 до 100 символов")
     private String name;
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "authors")
     @JsonIgnore
-    private List<Book> books = new ArrayList<>();
+    private Set<Book> books = new HashSet<>();
 
-    public Author(){
+    public Author() {
     }
 
     public Author(String name) {
@@ -49,11 +51,11 @@ public class Author {
         this.name = name;
     }
 
-    public List<Book> getBooks() {
+    public Set<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(List<Book> books) {
+    public void setBooks(Set<Book> books) {
         this.books = books;
     }
 }

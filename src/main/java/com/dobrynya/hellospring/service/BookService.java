@@ -37,7 +37,7 @@ public class BookService {
     public Book update(Long id, Book updateBook) {
         Book book = findById(id);
         book.setTitle(updateBook.getTitle());
-        book.setAuthor(updateBook.getAuthor());
+        book.setAuthors(updateBook.getAuthors());
         book.setTags(updateBook.getTags());
         return bookRepository.save(book);
     }
@@ -47,11 +47,11 @@ public class BookService {
     }
 
     public List<Book> findByAuthorId(Long authorId) {
-        return bookRepository.findByAuthorId(authorId);
+        return bookRepository.findByAuthors_Id(authorId);
     }
 
     public List<Book> findByAuthorName(String authorName) {
-        return bookRepository.findByAuthorNameContainingIgnoreCase(authorName);
+        return bookRepository.findByAuthors_NameContainingIgnoreCase(authorName);
     }
 
     public List<Book> findByTagId(Long tagId) {
