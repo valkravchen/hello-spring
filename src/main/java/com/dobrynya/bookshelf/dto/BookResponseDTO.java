@@ -7,15 +7,18 @@ public class BookResponseDTO {
     private String title;
     private List<String> authorNames;
     private List<String> tagNames;
+    private boolean hasPdf;
 
     public BookResponseDTO() {
     }
 
-    public BookResponseDTO(Long id, String title, List<String> authorNames, List<String> tagNames) {
+    public BookResponseDTO(Long id, String title, List<String> authorNames,
+                           List<String> tagNames, boolean hasPdf) {
         this.id = id;
         this.title = title;
         this.authorNames = authorNames;
         this.tagNames = tagNames;
+        this.hasPdf = hasPdf;
     }
 
     public Long getId() {
@@ -48,5 +51,13 @@ public class BookResponseDTO {
 
     public void setTagNames(List<String> tagNames) {
         this.tagNames = tagNames;
+    }
+
+    public boolean isHasPdf() {
+        return hasPdf;
+    }
+
+    public void setHasPdf(boolean hasPdf) {
+        this.hasPdf = hasPdf;
     }
 }
