@@ -97,4 +97,19 @@ public class BookController {
         bookService.uploadPdf(id, file);
         return ResponseEntity.ok("PDF загружен успешно");
     }
+
+    public ResponseEntity<byte[]> downloadPdf(@PathVariable Long id) {
+        byte[] pdfContent = bookService.getPdf(id);
+        return ResponseEntity.ok()
+                .header("Content-Type", "application/pdf")
+                .header("Content-Disposition", "attachment; " +
+                        "filename=\"book_" + id + ".pdf\"")
+                .body(pdfContent);
+    }
+
+    @DeleteMapping("/{id}/pdf")
+    public ResponseEntity<Void> deletePdf(@PathVariable Long id) {
+        bookService.deletePdf(id);
+        return ResponseEntity.noContent().build();
+    }
 }
