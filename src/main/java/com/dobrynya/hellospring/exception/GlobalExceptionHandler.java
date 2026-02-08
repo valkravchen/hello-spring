@@ -1,5 +1,6 @@
 package com.dobrynya.hellospring.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -43,5 +44,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(TagNotFoundException.class)
     public ResponseEntity<String> handleTagNotFound(TagNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<String> handleDataIntegrity(DataIntegrityViolationException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Запись с такими данными уже существует");
     }
 }
