@@ -7,6 +7,7 @@ import com.dobrynya.bookshelf.mapper.BookMapper;
 import com.dobrynya.bookshelf.model.Book;
 import com.dobrynya.bookshelf.repository.BookRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -14,10 +15,13 @@ import java.util.List;
 public class BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
+    private final FileStorageService fileStorageService;
 
-    public BookService(BookRepository bookRepository, BookMapper bookMapper) {
+    public BookService(BookRepository bookRepository, BookMapper bookMapper,
+                       FileStorageService fileStorageService) {
         this.bookRepository = bookRepository;
         this.bookMapper = bookMapper;
+        this.fileStorageService = fileStorageService;
     }
 
     public List<BookResponseDTO> findAll() {
@@ -73,5 +77,18 @@ public class BookService {
     public List<BookResponseDTO> findByTagName(String tagName) {
         List<Book> books = bookRepository.findByTags_NameContainingIgnoreCase(tagName);
         return bookMapper.toResponseDTOList(books);
+    }
+
+    public void uploadPdf(Long bookId, MultipartFile file) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new BookNotFoundException(bookId));
+
+        if (book.getPdfPath() != null) {
+            fileStorageService.deleteFile(book.getPdfPath());
+        }
+
+        String filePath = fileStorageService.saveFile(file, bookId);
+        book.setPdfPath(filePath);
+        bookRepository.save(book);
     }
 }
