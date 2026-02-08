@@ -41,8 +41,10 @@ public class BookService {
     }
 
     public void delete(Long id) {
-        if (!bookRepository.existsById(id)) {
-            throw new BookNotFoundException(id);
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException(id));
+        if (book.getPdfPath() != null) {
+            fileStorageService.deleteFile(book.getPdfPath());
         }
         bookRepository.deleteById(id);
     }
