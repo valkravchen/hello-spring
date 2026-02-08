@@ -18,6 +18,7 @@ public class Tag {
 
     @NotBlank(message = "Название тега обязательно")
     @Size(min = 2, max = 50, message = "Тег: от 2 до 50 символов")
+    @Column(unique = true)
     private String name;
 
     @ManyToMany(mappedBy = "tags")
