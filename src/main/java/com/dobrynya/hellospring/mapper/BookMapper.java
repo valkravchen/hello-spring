@@ -64,4 +64,20 @@ public class BookMapper {
                 .map(this::toResponseDTO)
                 .toList();
     }
+
+    public void updateEntity(Book book, BookCreateDTO dto) {
+        book.setTitle(dto.getTitle());
+        Set<Author> authors = new HashSet<>(
+                authorRepository.findAllById(dto.getAuthorIds())
+        );
+        book.setAuthors(authors);
+        if (dto.getTagIds() != null) {
+            Set<Tag> tags = new HashSet<>(
+                    tagRepository.findAllById(dto.getTagIds())
+            );
+            book.setTags(tags);
+        } else {
+            book.setTags(new HashSet<>());
+        }
+    }
 }
