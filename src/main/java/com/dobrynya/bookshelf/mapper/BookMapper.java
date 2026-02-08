@@ -34,11 +34,14 @@ public class BookMapper {
                 .map(Tag::getName)
                 .toList();
 
+        boolean hasPdf = book.getPdfPath() != null;
+
         return new BookResponseDTO(
                 book.getId(),
                 book.getTitle(),
                 authorNames,
-                tagNames
+                tagNames,
+                hasPdf
         );
     }
 
