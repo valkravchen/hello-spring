@@ -100,4 +100,14 @@ public class BookService {
         }
         return fileStorageService.getFile(book.getPdfPath());
     }
+
+    public void deletePdf(Long bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new BookNotFoundException(bookId));
+        if (book.getPdfPath() != null) {
+            fileStorageService.deleteFile(book.getPdfPath());
+            book.setPdfPath(null);
+            bookRepository.save(book);
+        }
+    }
 }
