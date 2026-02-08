@@ -20,6 +20,7 @@ public class Author {
 
     @NotBlank(message = "Имя автора обязательно")
     @Size(min = 2, max = 100, message = "Имя автора: от 2 до 100 символов")
+    @Column(unique = true)
     private String name;
 
     @ManyToMany(mappedBy = "authors")
