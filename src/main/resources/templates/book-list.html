@@ -17,6 +17,7 @@
 <table border="1" th:unless="${#lists.isEmpty(books)}">
     <thead>
     <tr>
+        <th>№</th>
         <th>ID</th>
         <th>Название</th>
         <th>Авторы</th>
@@ -24,7 +25,8 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="book : ${books}">
+    <tr th:each="book, status : ${books}">
+        <td th:text="${status.count}">1</td>
         <td th:text="${book.id}">1</td>
         <td th:text="${book.title}">Название книги</td>
         <td th:text="${#strings.listJoin(book.authorNames, ', ')}">Автор</td>
