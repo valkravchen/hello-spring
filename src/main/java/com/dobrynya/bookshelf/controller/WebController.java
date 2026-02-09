@@ -32,4 +32,9 @@ public class WebController {
         model.addAttribute("books", books);
         return "book-list";
     }
+
+    @GetMapping("/books/new")
+    public String showCreateForm() {
+        return "book-form";
+    }
 }
