@@ -1,31 +1,32 @@
 package com.dobrynya.bookshelf.practice;
 
+
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class StringStreamPractice {
     public static void main(String[] args) {
-        // Данные из формы
-        String title = "Spring in Action";
-        String authorInput = "Craig Walls, , Craig Walls";  // дубликат + пустой элемент
-        String tagInput = "Java, Spring, , Java";           // дубликат + пустой элемент
-        // 1. Авторы — обязательное поле
-        Set<String> authors = Arrays.stream(authorInput.split(","))
+        // Дано: цикл
+        String input = "  Java ,, Spring Boot , , PostgreSQL, Docker , ";
+        String[] parts = input.split(",");
+        List<String> result = new ArrayList<>();
+        for (String part : parts) {
+            String trimmed = part.trim();
+            if (!trimmed.isEmpty()) {
+                result.add(trimmed);
+            }
+        }
+        System.out.println("Цикл: " + result);
+
+// Задание: перепиши на Stream
+        List<String> streamResult = Arrays.stream(input.split(","))
                 .map(String::trim)
                 .filter(string -> !string.isEmpty())
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
 
-        // 2. Теги — необязательное поле
-        Set<String> tags = null;
-        if (tagInput!= null && !tagInput.isEmpty()) {
-            tags = Arrays.stream(tagInput.split(","))
-                    .map(String::trim)
-                    .filter(string -> !string.isEmpty())
-                    .collect(Collectors.toSet());
-        }
-        System.out.println("Название: " + title);
-        System.out.println("Авторы: " + authors);
-        System.out.println("Теги: " + tags);
+        System.out.println("Stream: " + streamResult);
+// Оба результата: [Java, Spring Boot, PostgreSQL, Docker]
     }
 }
