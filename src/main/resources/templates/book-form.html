@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить книгу — BookShelf</title>
+</head>
+<body>
+
+<h1>Добавить книгу</h1>
+
+<form th:action="@{/books}" method="post">
+
+    <div>
+        <label for="title">Название:</label><br>
+        <input type="text" id="title" name="title" required>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="authorNames">Авторы (через запятую):</label><br>
+        <input type="text" id="authorNames" name="authorNames"
+               placeholder="Craig Walls, Joshua Bloch" required>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="tagNames">Теги (через запятую, необязательно):</label><br>
+        <input type="text" id="tagNames" name="tagNames"
+               placeholder="Java, Spring, Architecture">
+    </div>
+
+    <br>
+
+    <button type="submit">Сохранить</button>
+
+</form>
+
+<br>
+<a th:href="@{/books}">← К списку книг</a>
+
+</body>
+</html>
