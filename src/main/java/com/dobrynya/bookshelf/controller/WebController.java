@@ -1,5 +1,6 @@
 package com.dobrynya.bookshelf.controller;
 
+import com.dobrynya.bookshelf.dto.BookCreateDTO;
 import com.dobrynya.bookshelf.dto.BookResponseDTO;
 import com.dobrynya.bookshelf.service.BookService;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 public class WebController {
@@ -39,5 +41,37 @@ public class WebController {
     @GetMapping("/books/new")
     public String showCreateForm() {
         return "book-form";
+    }
+
+    public String createBook(
+            @RequestParam String title,
+            @RequestParam String authorNames,
+            @RequestParam(required = false) String tagNames
+    ) {
+        // 1. Разбиваем авторов
+        Set<String> authorSet = Arrays.stream(authorNames.split(","))
+                .map(String::trim)
+                .filter(string -> !string.isEmpty())
+                .collect(Collectors.toSet());
+
+        // 2. Разбиваем теги (если не пусто)
+        Set<String> tagSet = null;
+        if (tagNames != null && !tagNames.isBlank()) {
+            tagSet = Arrays.stream(tagNames.split(","))
+                    .map(String::trim)
+                    .filter(string -> !string.isEmpty())
+                    .collect(Collectors.toSet());
+        }
+
+        // 3. Создаём DTO
+        BookCreateDTO dto = new BookCreateDTO();
+        dto.setTitle(title);
+        dto.setAuthorNames(authorSet);
+        dto.setTagNames(tagSet);
+
+        // 4. Сохраняем
+        bookService.save(dto);
+        // 5. Редирект
+        return "redirect:/books";
     }
 }
