@@ -6,6 +6,7 @@ import com.dobrynya.bookshelf.service.BookService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -71,6 +72,12 @@ public class WebController {
 
         bookService.save(dto);
 
+        return "redirect:/books";
+    }
+
+    @PostMapping("/book/{id}delete")
+    public String deleteBook(@PathVariable Long id) {
+        bookService.delete(id);
         return "redirect:/books";
     }
 }
