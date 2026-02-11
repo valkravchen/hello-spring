@@ -75,7 +75,7 @@ public class WebController {
         return "redirect:/books";
     }
 
-    @PostMapping("/books/{id}delete")
+    @PostMapping("/books/{id}/delete")
     public String deleteBook(@PathVariable Long id) {
         bookService.delete(id);
         return "redirect:/books";
