@@ -1,7 +1,9 @@
 package com.dobrynya.bookshelf.practice;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class StringStreamPractice {
     public static void main(String[] args) {
@@ -27,5 +29,10 @@ public class StringStreamPractice {
             }
         }
         System.out.println("Задание 3: " + authorSet);
+        Set<String> authorSet2 = Arrays.stream(authorNames.split(","))
+                .map(String::trim)
+                .filter(string -> !string.isEmpty())
+                .collect(Collectors.toSet());
+        System.out.println("Задание 4: " + authorSet2);
     }
 }
