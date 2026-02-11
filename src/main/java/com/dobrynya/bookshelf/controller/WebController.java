@@ -50,14 +50,13 @@ public class WebController {
             @RequestParam String authorNames,
             @RequestParam(required = false) String tagNames
     ) {
-        // 1. Разбиваем авторов
         Set<String> authorSet = Arrays.stream(authorNames.split(","))
                 .map(String::trim)
                 .filter(string -> !string.isEmpty())
                 .collect(Collectors.toSet());
 
-        // 2. Разбиваем теги (если не пусто)
         Set<String> tagSet = null;
+
         if (tagNames != null && !tagNames.isBlank()) {
             tagSet = Arrays.stream(tagNames.split(","))
                     .map(String::trim)
@@ -65,15 +64,13 @@ public class WebController {
                     .collect(Collectors.toSet());
         }
 
-        // 3. Создаём DTO
         BookCreateDTO dto = new BookCreateDTO();
         dto.setTitle(title);
         dto.setAuthorNames(authorSet);
         dto.setTagNames(tagSet);
 
-        // 4. Сохраняем
         bookService.save(dto);
-        // 5. Редирект
+
         return "redirect:/books";
     }
 }
