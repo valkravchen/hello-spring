@@ -87,4 +87,34 @@ public class WebController {
         model.addAttribute("book", book);
         return "book-edit";
     }
+
+    @PostMapping("/books/{id}/edit")
+    public String updateBook(
+            @PathVariable Long id,
+            @RequestParam String title,
+            @RequestParam String authorNames,
+            @RequestParam(required = false) String tagNames
+    ) {
+        Set<String> authorSet = Arrays.stream(authorNames.split(","))
+                .map(String::trim)
+                .filter(string -> !string.isEmpty())
+                .collect(Collectors.toSet());
+
+        Set<String> tagSet = null;
+        if (tagNames != null && !tagNames.isEmpty()) {
+            tagSet = Arrays.stream(tagNames.split(","))
+                    .map(String::trim)
+                    .filter(string -> !string.isEmpty())
+                    .collect(Collectors.toSet());
+        }
+
+        BookCreateDTO dto = new BookCreateDTO();
+        dto.setTitle(title);
+        dto.setAuthorNames(authorSet);
+        dto.setTagNames(tagSet);
+
+        bookService.update(id, dto);
+
+        return "redirect:/books";
+    }
 }
