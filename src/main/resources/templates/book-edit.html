@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать книгу — BookShelf</title>
+</head>
+<body>
+
+<h1>Редактировать книгу</h1>
+
+<form th:action="@{/books/{id}/edit(id=${book.id})}" method="post">
+
+    <div>
+        <label for="title">Название:</label><br>
+        <input type="text" id="title" name="title"
+               th:value="${book.title}" required>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="authorNames">Авторы (через запятую):</label><br>
+        <input type="text" id="authorNames" name="authorNames"
+               th:value="${#strings.listJoin(book.authorNames, ', ')}" required>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="tagNames">Теги (через запятую, необязательно):</label><br>
+        <input type="text" id="tagNames" name="tagNames"
+               th:value="${#strings.listJoin(book.tagNames, ', ')}">
+    </div>
+
+    <br>
+
+    <button type="submit">Сохранить изменения</button>
+
+</form>
+
+<br>
+<a th:href="@{/books}">← К списку книг</a>
+
+</body>
+</html>
