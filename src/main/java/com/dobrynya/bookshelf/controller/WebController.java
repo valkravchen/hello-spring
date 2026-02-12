@@ -80,4 +80,11 @@ public class WebController {
         bookService.delete(id);
         return "redirect:/books";
     }
+
+    @GetMapping("/books/{id}/edit")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        BookResponseDTO book = bookService.findById(id);
+        model.addAttribute("book", book);
+        return "book-edit";
+    }
 }
