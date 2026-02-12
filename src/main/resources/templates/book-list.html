@@ -16,13 +16,13 @@
 <!-- Таблица, если книги есть -->
 <table border="1" th:unless="${#lists.isEmpty(books)}">
     <thead>
-    <th>Действия</th>
     <tr>
         <th>№</th>
         <th>ID</th>
         <th>Название</th>
         <th>Авторы</th>
         <th>Теги</th>
+        <th>Действия</th>
     </tr>
     </thead>
     <tbody>
@@ -33,7 +33,7 @@
         <td th:text="${#strings.listJoin(book.authorNames, ', ')}">Автор</td>
         <td th:text="${#strings.listJoin(book.tagNames, ', ')}">Тег</td>
         <td>
-            <form th:action="@{/books/{id}/delete(id=${book.getId()})}" method="post"
+            <form th:action="@{/books/{id}/delete(id=${book.id})}" method="post"
                   style="display:inline;">
                 <button type="submit" onclick="return confirm('Удалить книгу?')">
                     Удалить
