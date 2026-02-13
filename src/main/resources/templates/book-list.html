@@ -2,80 +2,100 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Книги — BookShelf</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
 </head>
 <body>
 
-<h1>Мои книги</h1>
-<a th:href="@{/books/new}">+ Добавить книгу</a>
+<div class="container mt-4">
 
-<br><br>
+    <!-- Заголовок + кнопка "Добавить" в одной строке -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Мои книги</h1>
+        <a class="btn btn-success" th:href="@{/books/new}">+ Добавить книгу</a>
+    </div>
 
-<form th:action="@{/books}" method="get" style="display:inline;">
-    <input type="text" name="search" th:value="${search}"
-           placeholder="Поиск по названию...">
-    <select name="tag">
-        <option value="">Все теги</option>
-        <option th:each="tagName : ${allTags}"
-                th:value="${tagName}"
-                th:text="${tagName}"
-                th:selected="${tagName == selectedTag}">
-            Тег
-        </option>
-    </select>
-    <button type="submit">Найти</button>
-    <a th:href="@{/books}">Сбросить</a>
-</form>
+    <!-- Форма поиска -->
+    <form th:action="@{/books}" method="get" class="row g-2 mb-3">
+        <div class="col-md-4">
+            <input type="text" class="form-control" name="search" th:value="${search}"
+                   placeholder="Поиск по названию...">
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" name="tag">
+                <option value="">Все теги</option>
+                <option th:each="tagName : ${allTags}"
+                        th:value="${tagName}"
+                        th:text="${tagName}"
+                        th:selected="${tagName == selectedTag}">
+                    Тег
+                </option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Найти</button>
+            <a class="btn btn-secondary" th:href="@{/books}">Сбросить</a>
+        </div>
+    </form>
 
-<p th:if="${search != null and !search.isEmpty()}">
-    Результаты поиска по: «<span th:text="${search}">запрос</span>»
-    (найдено: <span th:text="${#lists.size(books)}">0</span>)
-</p>
+    <!-- Результаты поиска -->
+    <div class="alert alert-info" th:if="${search != null and !search.isEmpty()}">
+        Результаты поиска по: «<span th:text="${search}">запрос</span>»
+        (найдено: <span th:text="${#lists.size(books)}">0</span>)
+    </div>
 
-<!-- Библиотека реально пуста (нет поиска) -->
-<p th:if="${#lists.isEmpty(books) and (search == null or search.isEmpty())}">
-    Библиотека пуста. Добавьте первую книгу!
-</p>
+    <!-- Библиотека реально пуста (нет поиска) -->
+    <div class="alert alert-warning"
+         th:if="${#lists.isEmpty(books) and (search == null or search.isEmpty())}">
+        Библиотека пуста. Добавьте первую книгу!
+    </div>
 
-<!-- Поиск не дал результатов -->
-<p th:if="${#lists.isEmpty(books) and search != null and !search.isEmpty()}">
-    По запросу «<span th:text="${search}">запрос</span>» ничего не найдено.
-    <a th:href="@{/books}">Сбросить</a>
-</p>
+    <!-- Поиск не дал результатов -->
+    <div class="alert alert-warning"
+         th:if="${#lists.isEmpty(books) and search != null and !search.isEmpty()}">
+        По запросу «<span th:text="${search}">запрос</span>» ничего не найдено.
+        <a class="alert-link" th:href="@{/books}">Сбросить</a>
+    </div>
 
-<table border="1" th:unless="${#lists.isEmpty(books)}">
-    <thead>
-    <tr>
-        <th>№</th>
-        <th>ID</th>
-        <th>Название</th>
-        <th>Авторы</th>
-        <th>Теги</th>
-        <th>Действия</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="book, status : ${books}">
-        <td th:text="${status.count}">1</td>
-        <td th:text="${book.id}">1</td>
-        <td th:text="${book.title}">Название книги</td>
-        <td th:text="${#strings.listJoin(book.authorNames, ', ')}">Автор</td>
-        <td th:text="${#strings.listJoin(book.tagNames, ', ')}">Тег</td>
-        <td>
-            <a th:href="@{/books/{id}/edit(id=${book.id})}">Редактировать</a>
-            <form th:action="@{/books/{id}/delete(id=${book.id})}" method="post"
-                  style="display:inline;">
-                <button type="submit" onclick="return confirm('Удалить книгу?')">
-                    Удалить
-                </button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+    <!-- Таблица -->
+    <table class="table table-striped table-hover" th:unless="${#lists.isEmpty(books)}">
+        <thead class="table-dark">
+        <tr>
+            <th>№</th>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Авторы</th>
+            <th>Теги</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book, status : ${books}">
+            <td th:text="${status.count}">1</td>
+            <td th:text="${book.id}">1</td>
+            <td th:text="${book.title}">Название книги</td>
+            <td th:text="${#strings.listJoin(book.authorNames, ', ')}">Автор</td>
+            <td th:text="${#strings.listJoin(book.tagNames, ', ')}">Тег</td>
+            <td>
+                <a class="btn btn-warning btn-sm"
+                   th:href="@{/books/{id}/edit(id=${book.id})}">Редактировать</a>
+                <form th:action="@{/books/{id}/delete(id=${book.id})}" method="post"
+                      style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm"
+                            onclick="return confirm('Удалить книгу?')">
+                        Удалить
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-<br>
-<a th:href="@{/}">← На главную</a>
+</div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+</script>
 </body>
 </html>
