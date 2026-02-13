@@ -34,15 +34,27 @@ public class WebController {
     }
 
     @GetMapping("/books")
-    public String listBooks(@RequestParam(required = false) String search, Model model) {
+    public String listBooks(@RequestParam(required = false) String search,
+                            @RequestParam(required = false) String tag,
+                            Model model) {
         List<BookResponseDTO> books;
         if (search != null && !search.isBlank()) {
             books = bookService.searchByTitle(search);
+        } else if (tag != null && !tag.isBlank()) {
+            books = bookService.findByTagName(tag);
         } else {
             books = bookService.findAll();
         }
+
+        List<String> allTags = bookService.findAll().stream()
+                .flatMap(book -> book.getTagNames().stream())
+                .distinct()
+                .sorted()
+                .toList();
         model.addAttribute("books", books);
         model.addAttribute("search", search);
+        model.addAttribute("allTags", allTags);
+        model.addAttribute("selectedTag", tag);
         return "book-list";
     }
 

@@ -9,26 +9,40 @@
 <h1>Мои книги</h1>
 <a th:href="@{/books/new}">+ Добавить книгу</a>
 
+<br><br>
+
 <form th:action="@{/books}" method="get" style="display:inline;">
     <input type="text" name="search" th:value="${search}"
            placeholder="Поиск по названию...">
+    <select name="tag">
+        <option value="">Все теги</option>
+        <option th:each="tagName : ${allTags}"
+                th:value="${tagName}"
+                th:text="${tagName}"
+                th:selected="${tagName == selectedTag}">
+            Тег
+        </option>
+    </select>
     <button type="submit">Найти</button>
     <a th:href="@{/books}">Сбросить</a>
 </form>
-<p th:if="${serch != null and !search.isEmpty()}">
+
+<p th:if="${search != null and !search.isEmpty()}">
     Результаты поиска по: «<span th:text="${search}">запрос</span>»
     (найдено: <span th:text="${#lists.size(books)}">0</span>)
 </p>
-<!-- Сообщение, если книг нет -->
-<p th:if="${#lists.isEmpty(books)}">
+
+<!-- Библиотека реально пуста (нет поиска) -->
+<p th:if="${#lists.isEmpty(books) and (search == null or search.isEmpty())}">
     Библиотека пуста. Добавьте первую книгу!
 </p>
-<!-- Таблица, если книги есть -->
+
 <!-- Поиск не дал результатов -->
 <p th:if="${#lists.isEmpty(books) and search != null and !search.isEmpty()}">
     По запросу «<span th:text="${search}">запрос</span>» ничего не найдено.
-    <a th:href="@{???}">Сбросить</a>
+    <a th:href="@{/books}">Сбросить</a>
 </p>
+
 <table border="1" th:unless="${#lists.isEmpty(books)}">
     <thead>
     <tr>
